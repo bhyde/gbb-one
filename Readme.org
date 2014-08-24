@@ -1,0 +1,46 @@
+This is based on the GBBOpen tutorial.
+
+GBBOpen is an implementation of the Blackboard Design Pattern, i.e.
+a scheme that helps to coordinate the work of a number of so called
+Knowledge Source (i.e. applications) by providing a place were they
+can rondevous known as a blackboard.  The blackboard is a set of
+objects that representation of the current state of the problem
+the system is working on (i.e. it's a represents the problem space).
+Knowledge source can install triggers that fire when various events
+happen as the problem state changes.
+
+In the GBBOpen tutorial, and this code, a blackboard is used by two
+very simple knowledge sources, start and random-walker.  The only information
+place upon the blackboard are instances of the unit-instance class location.
+
+The work done by these knowledge sources is coordinated by the built
+in control shell.  We add event handlers which fire when the shell
+starts and as things finish up, i.e. quiescence.  Upon starting we
+create the blackboard, and when things quiet down we print the random
+walk taken by the random-walker.
+
+This example thus illustrates:
++ how a blackboard consist of some number of spaces, in this case one named '(known-word),
++ how knowledge sources are driven by event triggers (three in fact:
+++ control-shell-started which is used by our start KS,
+++ (instance-created-event location) which is used by our random-walker);
++ how instances on the blackboard maybe linked to each other in a
+  fairly elegant manner.
+
+The ASDF system definition has two files:
++ the actual application in bar.lisp, and
++ a bit of junk to get things bootstrapped.
+
+There are some self indulgent macrolets in bar.lisp.
+
+To run this you ought to be able to place this where your quicklisp
+can find it and then do:
+```common-lisp
+(ql:quickload "gbb-one")
+(gbbopen-user::go-go)
+```
+The go-go function discards any existing blackboard and then runs the
+control shell.  You can run go-go repeatedly, and in the comments
+you'll find examples of how to do various kinds of tracing and how to
+displace the state of things.  For example after running go-go you
+can display a summary of the blackboard.
