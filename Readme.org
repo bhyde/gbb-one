@@ -22,16 +22,15 @@ walk taken by the random-walker.
 This example thus illustrates:
 + how a blackboard consist of some number of spaces, in this case one named '(known-word),
 + how knowledge sources are driven by event triggers (three in fact:
-++ control-shell-started which is used by our start KS,
-++ (instance-created-event location) which is used by our random-walker);
+ + control-shell-started which is used by our start KS,
+ + (instance-created-event location) which is used by our random-walker);
 + how instances on the blackboard maybe linked to each other in a
   fairly elegant manner.
 
-The ASDF system definition has two files:
-+ the actual application in bar.lisp, and
-+ a bit of junk to get things bootstrapped.
-
-There are some self indulgent macrolets in bar.lisp.
+The ASDF system definition has two components:
++ bar.lisp the actual application in bar.lisp, and
++ startup.lisp a bit of junk to get things bootstrapped.
+It also depends on gbbopen, and alexandria.
 
 To run this you ought to be able to place this where your quicklisp
 can find it and then do:
@@ -44,3 +43,20 @@ control shell.  You can run go-go repeatedly, and in the comments
 you'll find examples of how to do various kinds of tracing and how to
 displace the state of things.  For example after running go-go you
 can display a summary of the blackboard.
+
+GBBOpen's modularity is a layered, like an archaeology dig.  There is
+an old module system bundled with it, let's call those gbbopen
+modules.  Clever code is provided to get ASDF working for those
+modules.  Quicklisp then works because it stands on ASDF.  I don't
+fully understand this clever code.  It it appears broken in some
+scenarios.  It appears that those in the know always load a file known
+as initialize.lisp, and you can see I load that in startup.lisp, and
+then I load the gbbopen module called gbbopen-user.  One feature of
+initialize.lisp is that it provides a number of "repl commands."  I'm
+prejudiced against repl commands.  So I haven't given them the
+attention they probably deserve.  I wrap the load of the initialize
+file in an attempt to suppress it's tendency to change the current
+package.
+
+There are some self indulgent macrolets in bar.lisp.
+
